@@ -3,6 +3,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider, useAuth } from '@/lib/auth-context'
 import ToolsPage from '@/pages/Tools'
 import ToolDetailPage from '@/pages/ToolDetail'
+import ArticlesPage from '@/pages/Articles'
+import ArticleDetailPage from '@/pages/ArticleDetail'
+import AiModelsPage from '@/pages/AiModels'
+import AiModelDetailPage from '@/pages/AiModelDetail'
 import LoginPage from '@/pages/Login'
 import RegisterPage from '@/pages/Register'
 import DashboardPage from '@/pages/Dashboard'
@@ -28,7 +32,13 @@ function Navigation() {
             AI Tools Monitor
           </Link>
           <Link to="/tools" className="text-sm hover:underline">
-            Browse Tools
+            Tools
+          </Link>
+          <Link to="/articles" className="text-sm hover:underline">
+            Articles
+          </Link>
+          <Link to="/ai-models" className="text-sm hover:underline">
+            AI Models
           </Link>
           {isAuthenticated && (
             <Link to="/dashboard" className="text-sm hover:underline">
@@ -119,6 +129,10 @@ function AppContent() {
           <Route path="/" element={<HomePage />} />
           <Route path="/tools" element={<ToolsPage />} />
           <Route path="/tools/:slug" element={<ToolDetailPage />} />
+          <Route path="/articles" element={<ArticlesPage />} />
+          <Route path="/articles/:slug" element={<ArticleDetailPage />} />
+          <Route path="/ai-models" element={<AiModelsPage />} />
+          <Route path="/ai-models/:id" element={<AiModelDetailPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
