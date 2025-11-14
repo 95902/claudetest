@@ -8,9 +8,9 @@ export default class extends BaseSchema {
       table.increments('id')
       table.string('key').notNullable()
       table.integer('points').notNullable().defaultTo(0)
-      table.timestamp('expires_at').nullable()
+      table.bigInteger('expire').notNullable()
 
-      table.index(['key', 'expires_at'])
+      table.index(['key', 'expire'])
     })
   }
 
