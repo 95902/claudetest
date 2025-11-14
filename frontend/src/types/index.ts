@@ -303,3 +303,54 @@ export interface Tag {
   updatedAt: string
   usage_count?: number
 }
+
+// Admin types
+export interface AdminStats {
+  users: {
+    total: number
+    admins: number
+    moderators: number
+    regular: number
+  }
+  tools: {
+    total: number
+    byCategory: Array<{ category: string; count: number }>
+    avgRating: number
+  }
+  articles: {
+    total: number
+    byCategory: Array<{ category: string; count: number }>
+  }
+  aiModels: {
+    total: number
+    active: number
+    deprecated: number
+    byProvider: Array<{ provider: string; count: number }>
+  }
+  engagement: {
+    comments: number
+    ratings: number
+  }
+}
+
+export interface UsersListResponse {
+  data: User[]
+  meta: {
+    total: number
+    per_page: number
+    current_page: number
+    last_page: number
+  }
+}
+
+export interface RecentActivity {
+  tools: Tool[]
+  articles: Article[]
+  comments: Comment[]
+}
+
+export interface ModerationQueue {
+  tools?: Tool[]
+  articles?: Article[]
+  comments?: Comment[]
+}

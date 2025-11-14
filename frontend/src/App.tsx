@@ -10,6 +10,7 @@ import AiModelDetailPage from '@/pages/AiModelDetail'
 import LoginPage from '@/pages/Login'
 import RegisterPage from '@/pages/Register'
 import DashboardPage from '@/pages/Dashboard'
+import AdminDashboard from '@/pages/AdminDashboard'
 import { Button } from '@/components/ui/button'
 
 const queryClient = new QueryClient({
@@ -43,6 +44,11 @@ function Navigation() {
           {isAuthenticated && (
             <Link to="/dashboard" className="text-sm hover:underline">
               Dashboard
+            </Link>
+          )}
+          {isAuthenticated && user?.role === 'admin' && (
+            <Link to="/admin" className="text-sm hover:underline">
+              Admin
             </Link>
           )}
         </div>
@@ -136,6 +142,7 @@ function AppContent() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </main>
       <footer className="border-t py-6 text-center text-sm text-muted-foreground">

@@ -19,6 +19,7 @@ const BookmarksController = () => import('#controllers/bookmarks_controller')
 const ArticlesController = () => import('#controllers/articles_controller')
 const AiModelsController = () => import('#controllers/ai_models_controller')
 const TagsController = () => import('#controllers/tags_controller')
+const AdminController = () => import('#controllers/admin_controller')
 
 /**
  * Health check route
@@ -200,5 +201,20 @@ router
           .use(middleware.auth())
       })
       .prefix('/tags')
+
+    /**
+     * Admin Routes (admin only)
+     */
+    router
+      .group(() => {
+        router.get('/stats', [AdminController, 'stats'])
+        router.get('/users', [AdminController, 'getUsers'])
+        router.put('/users/:id/role', [AdminController, 'updateUserRole'])
+        router.delete('/users/:id', [AdminController, 'deleteUser'])
+        router.get('/activity', [AdminController, 'getRecentActivity'])
+        router.get('/moderation', [AdminController, 'getModerationQueue'])
+      })
+      .prefix('/admin')
+      .use(middleware.auth())
   })
   .prefix('/api')

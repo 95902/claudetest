@@ -30,6 +30,10 @@ import type {
   AiModelsListResponse,
   AiModelFilters,
   Tag,
+  AdminStats,
+  UsersListResponse,
+  RecentActivity,
+  ModerationQueue,
 } from '@/types'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3333'
@@ -341,6 +345,48 @@ class ApiService {
       taggableType,
       taggableId,
       tagIds,
+    })
+    return response.data
+  }
+
+  // Admin
+  async getAdminStats(): Promise<ApiSuccess<AdminStats>> {
+    const response = await this.client.get<ApiSuccess<AdminStats>>('/api/admin/stats')
+    return response.data
+  }
+
+  async getUsers(params?: {
+    page?: number
+    limit?: number
+    role?: string
+    search?: string
+  }): Promise<UsersListResponse> {
+    const response = await this.client.get<UsersListResponse>('/api/admin/users', { params })
+    return response.data
+  }
+
+  async updateUserRole(userId: number, role: string): Promise<ApiSuccess<User>> {
+    const response = await this.client.put<ApiSuccess<User>>(`/api/admin/users/${userId}/role`, {
+      role,
+    })
+    return response.data
+  }
+
+  async deleteUser(userId: number): Promise<ApiSuccess> {
+    const response = await this.client.delete<ApiSuccess>(`/api/admin/users/${userId}`)
+    return response.data
+  }
+
+  async getRecentActivity(limit?: number): Promise<ApiSuccess<RecentActivity>> {
+    const response = await this.client.get<ApiSuccess<RecentActivity>>('/api/admin/activity', {
+      params: { limit },
+    })
+    return response.data
+  }
+
+  async getModerationQueue(type?: string): Promise<ApiSuccess<ModerationQueue>> {
+    const response = await this.client.get<ApiSuccess<ModerationQueue>>('/api/admin/moderation', {
+      params: { type },
     })
     return response.data
   }
