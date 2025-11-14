@@ -20,6 +20,7 @@ const ArticlesController = () => import('#controllers/articles_controller')
 const AiModelsController = () => import('#controllers/ai_models_controller')
 const TagsController = () => import('#controllers/tags_controller')
 const AdminController = () => import('#controllers/admin_controller')
+const RssFeedsController = () => import('#controllers/rss_feeds_controller')
 
 /**
  * Health check route
@@ -216,5 +217,36 @@ router
       })
       .prefix('/admin')
       .use(middleware.auth())
+
+    /**
+     * RSS Feeds Routes
+     */
+    router
+      .group(() => {
+        // Public routes - list feeds and articles
+        router.get('/', [RssFeedsController, 'index'])
+        router.get('/articles', [RssFeedsController, 'articles'])
+        router.get('/:id', [RssFeedsController, 'show'])
+
+        // Protected routes (authenticated users)
+        router
+          .group(() => {
+            router.put('/articles/:id/read', [RssFeedsController, 'markAsRead'])
+            router.post('/articles/:id/bookmark', [RssFeedsController, 'toggleBookmark'])
+          })
+          .use(middleware.auth())
+
+        // Admin/Moderator routes - manage feeds
+        router
+          .group(() => {
+            router.post('/', [RssFeedsController, 'store'])
+            router.put('/:id', [RssFeedsController, 'update'])
+            router.delete('/:id', [RssFeedsController, 'destroy'])
+            router.post('/:id/fetch', [RssFeedsController, 'fetch'])
+            router.post('/fetch-all', [RssFeedsController, 'fetchAll'])
+          })
+          .use(middleware.auth())
+      })
+      .prefix('/rss-feeds')
   })
   .prefix('/api')
