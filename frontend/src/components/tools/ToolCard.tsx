@@ -1,8 +1,9 @@
+import { Link } from 'react-router-dom'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import type { Tool } from '@/types'
-import { ExternalLink, Star, Eye } from 'lucide-react'
+import { ExternalLink, Star, Eye, ChevronRight } from 'lucide-react'
 
 interface ToolCardProps {
   tool: Tool
@@ -16,7 +17,7 @@ export function ToolCard({ tool }: ToolCardProps) {
   }
 
   return (
-    <Card className="hover:shadow-lg transition-shadow duration-200">
+    <Card className="hover:shadow-lg transition-shadow duration-200 flex flex-col h-full">
       <CardHeader>
         <div className="flex justify-between items-start">
           <div className="flex-1">
@@ -60,23 +61,32 @@ export function ToolCard({ tool }: ToolCardProps) {
         )}
       </CardContent>
 
-      <CardFooter className="flex justify-between items-center">
-        <div className="flex gap-3 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1">
-            <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-            {tool.averageRating.toFixed(1)} ({tool.ratingsCount})
-          </span>
-          <span className="flex items-center gap-1">
-            <Eye className="w-3 h-3" />
-            {tool.viewsCount}
-          </span>
+      <CardFooter className="flex flex-col gap-3 mt-auto">
+        <div className="flex justify-between items-center w-full">
+          <div className="flex gap-3 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1">
+              <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+              {tool.averageRating.toFixed(1)} ({tool.ratingsCount})
+            </span>
+            <span className="flex items-center gap-1">
+              <Eye className="w-3 h-3" />
+              {tool.viewsCount}
+            </span>
+          </div>
         </div>
-        <Button variant="ghost" size="sm" asChild>
-          <a href={tool.url} target="_blank" rel="noopener noreferrer">
-            <ExternalLink className="w-4 h-4 mr-1" />
-            Visit
-          </a>
-        </Button>
+        <div className="flex gap-2 w-full">
+          <Button variant="outline" size="sm" className="flex-1" asChild>
+            <Link to={`/tools/${tool.slug}`}>
+              View Details
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </Link>
+          </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <a href={tool.url} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   )

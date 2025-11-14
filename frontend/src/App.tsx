@@ -2,6 +2,9 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider, useAuth } from '@/lib/auth-context'
 import ToolsPage from '@/pages/Tools'
+import ToolDetailPage from '@/pages/ToolDetail'
+import LoginPage from '@/pages/Login'
+import RegisterPage from '@/pages/Register'
 import { Button } from '@/components/ui/button'
 
 const queryClient = new QueryClient({
@@ -109,32 +112,9 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/tools" element={<ToolsPage />} />
-          <Route
-            path="/login"
-            element={
-              <div className="container mx-auto px-4 py-16 text-center">
-                <h2 className="text-2xl font-bold mb-4">Login Page</h2>
-                <p className="text-muted-foreground">Login functionality coming soon!</p>
-                <Button asChild className="mt-4">
-                  <Link to="/tools">Browse Tools Instead</Link>
-                </Button>
-              </div>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <div className="container mx-auto px-4 py-16 text-center">
-                <h2 className="text-2xl font-bold mb-4">Register Page</h2>
-                <p className="text-muted-foreground">
-                  Registration functionality coming soon!
-                </p>
-                <Button asChild className="mt-4">
-                  <Link to="/tools">Browse Tools Instead</Link>
-                </Button>
-              </div>
-            }
-          />
+          <Route path="/tools/:slug" element={<ToolDetailPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
         </Routes>
       </main>
       <footer className="border-t py-6 text-center text-sm text-muted-foreground">
