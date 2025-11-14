@@ -10,6 +10,15 @@ import type {
   ToolsListResponse,
   ToolFilters,
   ApiSuccess,
+  Comment,
+  CreateCommentData,
+  UpdateCommentData,
+  Rating,
+  CreateRatingData,
+  UpdateRatingData,
+  Bookmark,
+  BookmarkCheckResponse,
+  BookmarkToggleResponse,
 } from '@/types'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3333'
@@ -136,6 +145,97 @@ class ApiService {
   // Helper: Get auth token
   getToken(): string | null {
     return localStorage.getItem('auth_token')
+  }
+
+  // Comments
+  async getComments(
+    commentableType: string,
+    commentableId: number,
+    parentId?: number | null
+  ): Promise<ApiSuccess<Comment[]>> {
+    const response = await this.client.get<ApiSuccess<Comment[]>>('/api/comments', {
+      params: { commentableType, commentableId, parentId },
+    })
+    return response.data
+  }
+
+  async createComment(data: CreateCommentData): Promise<ApiSuccess<Comment>> {
+    const response = await this.client.post<ApiSuccess<Comment>>('/api/comments', data)
+    return response.data
+  }
+
+  async updateComment(id: number, data: UpdateCommentData): Promise<ApiSuccess<Comment>> {
+    const response = await this.client.put<ApiSuccess<Comment>>(`/api/comments/${id}`, data)
+    return response.data
+  }
+
+  async deleteComment(id: number): Promise<void> {
+    await this.client.delete(`/api/comments/${id}`)
+  }
+
+  // Ratings
+  async getRatings(rateableType: string, rateableId: number): Promise<ApiSuccess<Rating[]>> {
+    const response = await this.client.get<ApiSuccess<Rating[]>>('/api/ratings', {
+      params: { rateableType, rateableId },
+    })
+    return response.data
+  }
+
+  async getMyRating(rateableType: string, rateableId: number): Promise<ApiSuccess<Rating>> {
+    const response = await this.client.get<ApiSuccess<Rating>>('/api/ratings/me', {
+      params: { rateableType, rateableId },
+    })
+    return response.data
+  }
+
+  async createRating(data: CreateRatingData): Promise<ApiSuccess<Rating>> {
+    const response = await this.client.post<ApiSuccess<Rating>>('/api/ratings', data)
+    return response.data
+  }
+
+  async updateRating(id: number, data: UpdateRatingData): Promise<ApiSuccess<Rating>> {
+    const response = await this.client.put<ApiSuccess<Rating>>(`/api/ratings/${id}`, data)
+    return response.data
+  }
+
+  async deleteRating(id: number): Promise<void> {
+    await this.client.delete(`/api/ratings/${id}`)
+  }
+
+  // Bookmarks
+  async getMyBookmarks(bookmarkableType?: string): Promise<ApiSuccess<Bookmark[]>> {
+    const response = await this.client.get<ApiSuccess<Bookmark[]>>('/api/bookmarks', {
+      params: { bookmarkableType },
+    })
+    return response.data
+  }
+
+  async checkBookmark(
+    bookmarkableType: string,
+    bookmarkableId: number
+  ): Promise<ApiSuccess<BookmarkCheckResponse>> {
+    const response = await this.client.get<ApiSuccess<BookmarkCheckResponse>>(
+      '/api/bookmarks/check',
+      {
+        params: { bookmarkableType, bookmarkableId },
+      }
+    )
+    return response.data
+  }
+
+  async toggleBookmark(
+    bookmarkableType: string,
+    bookmarkableId: number
+  ): Promise<BookmarkToggleResponse> {
+    const response = await this.client.post<BookmarkToggleResponse>('/api/bookmarks/toggle', {
+      bookmarkableType,
+      bookmarkableId,
+    })
+    return response.data
+  }
+
+  async deleteBookmark(id: number): Promise<void> {
+    await this.client.delete(`/api/bookmarks/${id}`)
   }
 }
 

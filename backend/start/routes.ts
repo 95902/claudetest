@@ -13,6 +13,9 @@ import { throttle } from '#start/limiter'
 
 const AuthController = () => import('#controllers/auth_controller')
 const ToolsController = () => import('#controllers/tools_controller')
+const CommentsController = () => import('#controllers/comments_controller')
+const RatingsController = () => import('#controllers/ratings_controller')
+const BookmarksController = () => import('#controllers/bookmarks_controller')
 
 /**
  * Health check route
@@ -83,5 +86,57 @@ router
           .use(middleware.auth())
       })
       .prefix('/tools')
+
+    /**
+     * Comments Routes
+     */
+    router
+      .group(() => {
+        // Public route - get comments
+        router.get('/', [CommentsController, 'index'])
+
+        // Protected routes (authenticated users only)
+        router
+          .group(() => {
+            router.post('/', [CommentsController, 'store'])
+            router.put('/:id', [CommentsController, 'update'])
+            router.delete('/:id', [CommentsController, 'destroy'])
+          })
+          .use(middleware.auth())
+      })
+      .prefix('/comments')
+
+    /**
+     * Ratings Routes
+     */
+    router
+      .group(() => {
+        // Public route - get all ratings for a resource
+        router.get('/', [RatingsController, 'index'])
+
+        // Protected routes (authenticated users only)
+        router
+          .group(() => {
+            router.get('/me', [RatingsController, 'show']) // Get user's rating
+            router.post('/', [RatingsController, 'store']) // Create/update rating
+            router.put('/:id', [RatingsController, 'update'])
+            router.delete('/:id', [RatingsController, 'destroy'])
+          })
+          .use(middleware.auth())
+      })
+      .prefix('/ratings')
+
+    /**
+     * Bookmarks Routes
+     */
+    router
+      .group(() => {
+        router.get('/', [BookmarksController, 'index']) // Get user's bookmarks
+        router.get('/check', [BookmarksController, 'show']) // Check if bookmarked
+        router.post('/toggle', [BookmarksController, 'toggle']) // Toggle bookmark
+        router.delete('/:id', [BookmarksController, 'destroy'])
+      })
+      .prefix('/bookmarks')
+      .use(middleware.auth())
   })
   .prefix('/api')

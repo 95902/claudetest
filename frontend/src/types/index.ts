@@ -95,6 +95,78 @@ export interface ToolFilters {
   sortOrder?: 'asc' | 'desc'
 }
 
+// Comment types
+export interface Comment {
+  id: number
+  content: string
+  userId: number
+  commentableType: string
+  commentableId: number
+  parentId: number | null
+  isEdited: boolean
+  editedAt: string | null
+  createdAt: string
+  updatedAt: string
+  user?: User
+}
+
+export interface CreateCommentData {
+  content: string
+  commentableType: 'Tool' | 'Article' | 'AiModel'
+  commentableId: number
+  parentId?: number
+}
+
+export interface UpdateCommentData {
+  content: string
+}
+
+// Rating types
+export interface Rating {
+  id: number
+  userId: number
+  rateableType: string
+  rateableId: number
+  score: number
+  reviewText: string | null
+  createdAt: string
+  updatedAt: string
+  user?: User
+}
+
+export interface CreateRatingData {
+  score: number
+  reviewText?: string
+  rateableType: 'Tool' | 'Article' | 'AiModel'
+  rateableId: number
+}
+
+export interface UpdateRatingData {
+  score: number
+  reviewText?: string
+}
+
+// Bookmark types
+export interface Bookmark {
+  id: number
+  userId: number
+  bookmarkableType: string
+  bookmarkableId: number
+  createdAt: string
+  updatedAt: string
+}
+
+export interface BookmarkCheckResponse {
+  isBookmarked: boolean
+  bookmark: Bookmark | null
+}
+
+export interface BookmarkToggleResponse {
+  message: string
+  isBookmarked: boolean
+  data?: Bookmark
+}
+
 // API Response types
 export interface ApiError {
   message: string
@@ -104,4 +176,5 @@ export interface ApiError {
 export interface ApiSuccess<T = any> {
   message?: string
   data?: T
+  user?: User
 }

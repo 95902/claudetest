@@ -7,6 +7,9 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ExternalLink, Star, Eye, Github, ArrowLeft, ThumbsUp, ThumbsDown } from 'lucide-react'
+import BookmarkButton from '@/components/BookmarkButton'
+import RatingStars from '@/components/RatingStars'
+import CommentSection from '@/components/CommentSection'
 
 export default function ToolDetailPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -104,6 +107,11 @@ export default function ToolDetailPage() {
             <span className="text-sm text-muted-foreground">{tool.viewsCount.toLocaleString()} views</span>
           </div>
           <div className="flex gap-2 ml-auto">
+            <BookmarkButton
+              bookmarkableType="Tool"
+              bookmarkableId={tool.id}
+              variant="outline"
+            />
             {tool.githubRepo && (
               <Button variant="outline" asChild>
                 <a href={tool.githubRepo} target="_blank" rel="noopener noreferrer">
@@ -121,6 +129,18 @@ export default function ToolDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* Rating Section */}
+      <Card className="mb-8">
+        <CardContent className="pt-6">
+          <h3 className="text-lg font-semibold mb-4">Rate this Tool</h3>
+          <RatingStars
+            rateableType="Tool"
+            rateableId={tool.id}
+            showReviewInput={true}
+          />
+        </CardContent>
+      </Card>
 
       {/* Content tabs */}
       <Tabs defaultValue="overview" className="mb-8">
@@ -217,7 +237,7 @@ export default function ToolDetailPage() {
       </Tabs>
 
       {/* Additional info */}
-      <Card>
+      <Card className="mb-8">
         <CardContent className="pt-6">
           <h3 className="text-lg font-semibold mb-4">Additional Information</h3>
           <dl className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
@@ -262,6 +282,9 @@ export default function ToolDetailPage() {
           </dl>
         </CardContent>
       </Card>
+
+      {/* Comments Section */}
+      <CommentSection commentableType="Tool" commentableId={tool.id} />
     </div>
   )
 }

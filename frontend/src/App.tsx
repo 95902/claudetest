@@ -5,6 +5,7 @@ import ToolsPage from '@/pages/Tools'
 import ToolDetailPage from '@/pages/ToolDetail'
 import LoginPage from '@/pages/Login'
 import RegisterPage from '@/pages/Register'
+import DashboardPage from '@/pages/Dashboard'
 import { Button } from '@/components/ui/button'
 
 const queryClient = new QueryClient({
@@ -29,6 +30,11 @@ function Navigation() {
           <Link to="/tools" className="text-sm hover:underline">
             Browse Tools
           </Link>
+          {isAuthenticated && (
+            <Link to="/dashboard" className="text-sm hover:underline">
+              Dashboard
+            </Link>
+          )}
         </div>
 
         <div className="flex items-center gap-4">
@@ -115,6 +121,7 @@ function AppContent() {
           <Route path="/tools/:slug" element={<ToolDetailPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
         </Routes>
       </main>
       <footer className="border-t py-6 text-center text-sm text-muted-foreground">
