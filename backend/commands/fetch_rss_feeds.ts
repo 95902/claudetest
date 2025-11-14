@@ -13,16 +13,11 @@ export default class FetchRssFeeds extends BaseCommand {
     startApp: true,
   }
 
-  private parser: Parser
-
-  constructor() {
-    super()
-    this.parser = new Parser({
-      customFields: {
-        item: ['media:content', 'media:thumbnail', 'enclosure'],
-      },
-    })
-  }
+  private parser: Parser = new Parser({
+    customFields: {
+      item: ['media:content', 'media:thumbnail', 'enclosure'],
+    },
+  })
 
   async run() {
     const startTime = Date.now()
