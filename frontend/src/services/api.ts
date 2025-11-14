@@ -34,6 +34,13 @@ import type {
   UsersListResponse,
   RecentActivity,
   ModerationQueue,
+  RssFeed,
+  RssArticle,
+  RssFeedsListResponse,
+  RssArticlesListResponse,
+  RssArticleFilters,
+  CreateRssFeedData,
+  UpdateRssFeedData,
 } from '@/types'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3333'
@@ -388,6 +395,58 @@ class ApiService {
     const response = await this.client.get<ApiSuccess<ModerationQueue>>('/api/admin/moderation', {
       params: { type },
     })
+    return response.data
+  }
+
+  // RSS Feeds
+  async getRssFeeds(params?: { page?: number; limit?: number; category?: string; is_active?: boolean }): Promise<RssFeedsListResponse> {
+    const response = await this.client.get<RssFeedsListResponse>('/api/rss-feeds', { params })
+    return response.data
+  }
+
+  async getRssFeed(id: number): Promise<{ feed: RssFeed; articles: RssArticlesListResponse }> {
+    const response = await this.client.get<{ feed: RssFeed; articles: RssArticlesListResponse }>(`/api/rss-feeds/${id}`)
+    return response.data
+  }
+
+  async createRssFeed(data: CreateRssFeedData): Promise<ApiSuccess<RssFeed>> {
+    const response = await this.client.post<ApiSuccess<RssFeed>>('/api/rss-feeds', data)
+    return response.data
+  }
+
+  async updateRssFeed(id: number, data: UpdateRssFeedData): Promise<ApiSuccess<RssFeed>> {
+    const response = await this.client.put<ApiSuccess<RssFeed>>(`/api/rss-feeds/${id}`, data)
+    return response.data
+  }
+
+  async deleteRssFeed(id: number): Promise<ApiSuccess> {
+    const response = await this.client.delete<ApiSuccess>(`/api/rss-feeds/${id}`)
+    return response.data
+  }
+
+  async fetchRssFeed(id: number): Promise<ApiSuccess<{ feed: RssFeed; newArticlesCount: number }>> {
+    const response = await this.client.post<ApiSuccess<{ feed: RssFeed; newArticlesCount: number }>>(`/api/rss-feeds/${id}/fetch`)
+    return response.data
+  }
+
+  async fetchAllRssFeeds(): Promise<ApiSuccess<{ results: any[]; totalNewArticles: number }>> {
+    const response = await this.client.post<ApiSuccess<{ results: any[]; totalNewArticles: number }>>('/api/rss-feeds/fetch-all')
+    return response.data
+  }
+
+  // RSS Articles
+  async getRssArticles(filters?: RssArticleFilters): Promise<RssArticlesListResponse> {
+    const response = await this.client.get<RssArticlesListResponse>('/api/rss-feeds/articles', { params: filters })
+    return response.data
+  }
+
+  async markRssArticleAsRead(id: number): Promise<ApiSuccess<RssArticle>> {
+    const response = await this.client.put<ApiSuccess<RssArticle>>(`/api/rss-feeds/articles/${id}/read`)
+    return response.data
+  }
+
+  async toggleRssArticleBookmark(id: number): Promise<ApiSuccess<RssArticle>> {
+    const response = await this.client.post<ApiSuccess<RssArticle>>(`/api/rss-feeds/articles/${id}/bookmark`)
     return response.data
   }
 }

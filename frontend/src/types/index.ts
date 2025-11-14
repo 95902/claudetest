@@ -354,3 +354,88 @@ export interface ModerationQueue {
   articles?: Article[]
   comments?: Comment[]
 }
+
+// RSS Feed types
+export interface RssFeed {
+  id: number
+  name: string
+  url: string
+  category: string
+  description: string | null
+  language: string
+  isActive: boolean
+  lastFetchedAt: string | null
+  articleCount: number
+  iconUrl: string | null
+  createdAt: string
+  updatedAt: string
+}
+
+export interface RssArticle {
+  id: number
+  rssFeedId: number
+  title: string
+  link: string
+  description: string | null
+  content: string | null
+  author: string | null
+  guid: string | null
+  publishedAt: string | null
+  imageUrl: string | null
+  isRead: boolean
+  isBookmarked: boolean
+  createdAt: string
+  updatedAt: string
+  feed?: RssFeed
+}
+
+export interface RssFeedsListResponse {
+  data: RssFeed[]
+  meta: {
+    total: number
+    per_page: number
+    current_page: number
+    last_page: number
+    first_page: number
+    first_page_url: string
+    last_page_url: string
+    next_page_url: string | null
+    previous_page_url: string | null
+  }
+}
+
+export interface RssArticlesListResponse {
+  data: RssArticle[]
+  meta: {
+    total: number
+    per_page: number
+    current_page: number
+    last_page: number
+    first_page: number
+    first_page_url: string
+    last_page_url: string
+    next_page_url: string | null
+    previous_page_url: string | null
+  }
+}
+
+export interface RssArticleFilters {
+  page?: number
+  limit?: number
+  feed_id?: number
+  is_read?: boolean
+  is_bookmarked?: boolean
+}
+
+export interface CreateRssFeedData {
+  name: string
+  url: string
+  category: string
+  description?: string
+  language?: string
+  icon_url?: string
+}
+
+export interface UpdateRssFeedData extends Partial<CreateRssFeedData> {
+  is_active?: boolean
+}

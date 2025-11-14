@@ -7,6 +7,7 @@ import ArticlesPage from '@/pages/Articles'
 import ArticleDetailPage from '@/pages/ArticleDetail'
 import AiModelsPage from '@/pages/AiModels'
 import AiModelDetailPage from '@/pages/AiModelDetail'
+import RssFeedsPage from '@/pages/RssFeeds'
 import LoginPage from '@/pages/Login'
 import RegisterPage from '@/pages/Register'
 import DashboardPage from '@/pages/Dashboard'
@@ -40,6 +41,9 @@ function Navigation() {
           </Link>
           <Link to="/ai-models" className="text-sm hover:underline">
             AI Models
+          </Link>
+          <Link to="/rss-feeds" className="text-sm hover:underline">
+            RSS Feeds
           </Link>
           {isAuthenticated && (
             <Link to="/dashboard" className="text-sm hover:underline">
@@ -139,6 +143,7 @@ function AppContent() {
           <Route path="/articles/:slug" element={<ArticleDetailPage />} />
           <Route path="/ai-models" element={<AiModelsPage />} />
           <Route path="/ai-models/:id" element={<AiModelDetailPage />} />
+          <Route path="/rss-feeds" element={<RssFeedsPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
