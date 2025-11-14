@@ -1,6 +1,38 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 import { registerValidator, loginValidator } from '#validators/auth_validator'
+import db from '@adonisjs/lucid/services/db'
+import string from '@poppinss/utils/string'
+import { DateTime } from 'luxon'
+
+/**
+ * Helper function to create access token manually
+ * This bypasses the @adonisjs/auth bug with expires_at calculation
+ */
+async function createManualAccessToken(user: User) {
+  const tokenValue = string.generateRandom(64)
+  const tokenHash = string.hash(tokenValue)
+
+  const [tokenRow] = await db
+    .table('auth_access_tokens')
+    .insert({
+      tokenable_id: user.id,
+      type: 'auth_token',
+      name: null,
+      hash: tokenHash,
+      abilities: JSON.stringify(['*']),
+      expires_at: null,
+      created_at: DateTime.now().toSQL(),
+      updated_at: DateTime.now().toSQL(),
+    })
+    .returning('*')
+
+  return {
+    value: tokenValue,
+    expiresAt: null,
+    tokenRow,
+  }
+}
 
 export default class AuthController {
   /**
@@ -22,8 +54,8 @@ export default class AuthController {
         preferences: null,
       })
 
-      // Generate access token (no expiration)
-      const token = await User.accessTokens.create(user)
+      // Generate access token (manual creation to avoid expires_at bug)
+      const token = await createManualAccessToken(user)
 
       return response.created({
         message: 'User registered successfully',
@@ -36,7 +68,7 @@ export default class AuthController {
         },
         token: {
           type: 'bearer',
-          value: token.value!.release(),
+          value: token.value,
           expiresAt: token.expiresAt,
         },
       })
@@ -63,8 +95,8 @@ export default class AuthController {
       // Verify credentials
       const user = await User.verifyCredentials(uid, password)
 
-      // Generate access token (no expiration)
-      const token = await User.accessTokens.create(user)
+      // Generate access token
+      const token = await User.accessTokens.create(user, ['*'])
 
       return response.ok({
         message: 'Login successful',
