@@ -178,3 +178,128 @@ export interface ApiSuccess<T = any> {
   data?: T
   user?: User
 }
+
+// Article types
+export interface Article {
+  id: number
+  title: string
+  slug: string
+  content: string
+  excerpt: string | null
+  sourceUrl: string | null
+  author: string | null
+  publishedAt: string | null
+  imageUrl: string | null
+  category: string | null
+  userId: number | null
+  viewsCount: number
+  createdAt: string
+  updatedAt: string
+  user?: User
+}
+
+export interface CreateArticleData {
+  title: string
+  slug: string
+  content: string
+  excerpt?: string
+  sourceUrl?: string
+  author?: string
+  publishedAt?: string
+  imageUrl?: string
+  category?: string
+}
+
+export interface UpdateArticleData extends Partial<CreateArticleData> {}
+
+export interface ArticlesListResponse {
+  data: Article[]
+  meta: {
+    total: number
+    per_page: number
+    current_page: number
+    last_page: number
+    first_page: number
+    first_page_url: string
+    last_page_url: string
+    next_page_url: string | null
+    previous_page_url: string | null
+  }
+}
+
+export interface ArticleFilters {
+  page?: number
+  limit?: number
+  category?: string
+  search?: string
+}
+
+// AI Model types
+export interface AiModel {
+  id: number
+  name: string
+  provider: string
+  version: string | null
+  modelType: string
+  contextWindow: number | null
+  parametersCount: string | null
+  pricing: Record<string, any> | null
+  capabilities: Record<string, any> | null
+  benchmarkScores: Record<string, any> | null
+  releaseDate: string | null
+  documentationUrl: string | null
+  status: 'active' | 'deprecated'
+  createdAt: string
+  updatedAt: string
+}
+
+export interface CreateAiModelData {
+  name: string
+  provider: string
+  version?: string
+  modelType: string
+  contextWindow?: number
+  parametersCount?: string
+  pricing?: Record<string, any>
+  capabilities?: Record<string, any>
+  benchmarkScores?: Record<string, any>
+  releaseDate?: string
+  documentationUrl?: string
+  status?: 'active' | 'deprecated'
+}
+
+export interface UpdateAiModelData extends Partial<CreateAiModelData> {}
+
+export interface AiModelsListResponse {
+  data: AiModel[]
+  meta: {
+    total: number
+    per_page: number
+    current_page: number
+    last_page: number
+    first_page: number
+    first_page_url: string
+    last_page_url: string
+    next_page_url: string | null
+    previous_page_url: string | null
+  }
+}
+
+export interface AiModelFilters {
+  page?: number
+  limit?: number
+  provider?: string
+  modelType?: string
+  status?: 'active' | 'deprecated'
+  search?: string
+}
+
+// Tag types
+export interface Tag {
+  id: number
+  name: string
+  slug: string
+  createdAt: string
+  updatedAt: string
+  usage_count?: number
+}

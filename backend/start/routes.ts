@@ -16,6 +16,9 @@ const ToolsController = () => import('#controllers/tools_controller')
 const CommentsController = () => import('#controllers/comments_controller')
 const RatingsController = () => import('#controllers/ratings_controller')
 const BookmarksController = () => import('#controllers/bookmarks_controller')
+const ArticlesController = () => import('#controllers/articles_controller')
+const AiModelsController = () => import('#controllers/ai_models_controller')
+const TagsController = () => import('#controllers/tags_controller')
 
 /**
  * Health check route
@@ -138,5 +141,64 @@ router
       })
       .prefix('/bookmarks')
       .use(middleware.auth())
+
+    /**
+     * Articles Routes
+     */
+    router
+      .group(() => {
+        // Public routes
+        router.get('/', [ArticlesController, 'index'])
+        router.get('/:id', [ArticlesController, 'show'])
+
+        // Protected routes (authenticated users only)
+        router
+          .group(() => {
+            router.post('/', [ArticlesController, 'store'])
+            router.put('/:id', [ArticlesController, 'update'])
+            router.delete('/:id', [ArticlesController, 'destroy'])
+          })
+          .use(middleware.auth())
+      })
+      .prefix('/articles')
+
+    /**
+     * AI Models Routes
+     */
+    router
+      .group(() => {
+        // Public routes
+        router.get('/', [AiModelsController, 'index'])
+        router.get('/:id', [AiModelsController, 'show'])
+
+        // Protected routes (admin only)
+        router
+          .group(() => {
+            router.post('/', [AiModelsController, 'store'])
+            router.put('/:id', [AiModelsController, 'update'])
+            router.delete('/:id', [AiModelsController, 'destroy'])
+          })
+          .use(middleware.auth())
+      })
+      .prefix('/ai-models')
+
+    /**
+     * Tags Routes
+     */
+    router
+      .group(() => {
+        // Public routes
+        router.get('/', [TagsController, 'index'])
+        router.get('/resource', [TagsController, 'show'])
+
+        // Protected routes
+        router
+          .group(() => {
+            router.post('/attach', [TagsController, 'attach'])
+            router.post('/detach', [TagsController, 'detach'])
+          })
+          .use(middleware.auth())
+      })
+      .prefix('/tags')
   })
   .prefix('/api')

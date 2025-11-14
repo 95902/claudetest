@@ -19,6 +19,17 @@ import type {
   Bookmark,
   BookmarkCheckResponse,
   BookmarkToggleResponse,
+  Article,
+  CreateArticleData,
+  UpdateArticleData,
+  ArticlesListResponse,
+  ArticleFilters,
+  AiModel,
+  CreateAiModelData,
+  UpdateAiModelData,
+  AiModelsListResponse,
+  AiModelFilters,
+  Tag,
 } from '@/types'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3333'
@@ -236,6 +247,102 @@ class ApiService {
 
   async deleteBookmark(id: number): Promise<void> {
     await this.client.delete(`/api/bookmarks/${id}`)
+  }
+
+  // Articles
+  async getArticles(filters?: ArticleFilters): Promise<ArticlesListResponse> {
+    const response = await this.client.get<ArticlesListResponse>('/api/articles', {
+      params: filters,
+    })
+    return response.data
+  }
+
+  async getArticle(idOrSlug: string | number): Promise<ApiSuccess<Article>> {
+    const response = await this.client.get<ApiSuccess<Article>>(`/api/articles/${idOrSlug}`)
+    return response.data
+  }
+
+  async createArticle(data: CreateArticleData): Promise<ApiSuccess<Article>> {
+    const response = await this.client.post<ApiSuccess<Article>>('/api/articles', data)
+    return response.data
+  }
+
+  async updateArticle(id: number, data: UpdateArticleData): Promise<ApiSuccess<Article>> {
+    const response = await this.client.put<ApiSuccess<Article>>(`/api/articles/${id}`, data)
+    return response.data
+  }
+
+  async deleteArticle(id: number): Promise<void> {
+    await this.client.delete(`/api/articles/${id}`)
+  }
+
+  // AI Models
+  async getAiModels(filters?: AiModelFilters): Promise<AiModelsListResponse> {
+    const response = await this.client.get<AiModelsListResponse>('/api/ai-models', {
+      params: filters,
+    })
+    return response.data
+  }
+
+  async getAiModel(id: number): Promise<ApiSuccess<AiModel>> {
+    const response = await this.client.get<ApiSuccess<AiModel>>(`/api/ai-models/${id}`)
+    return response.data
+  }
+
+  async createAiModel(data: CreateAiModelData): Promise<ApiSuccess<AiModel>> {
+    const response = await this.client.post<ApiSuccess<AiModel>>('/api/ai-models', data)
+    return response.data
+  }
+
+  async updateAiModel(id: number, data: UpdateAiModelData): Promise<ApiSuccess<AiModel>> {
+    const response = await this.client.put<ApiSuccess<AiModel>>(`/api/ai-models/${id}`, data)
+    return response.data
+  }
+
+  async deleteAiModel(id: number): Promise<void> {
+    await this.client.delete(`/api/ai-models/${id}`)
+  }
+
+  // Tags
+  async getTags(): Promise<ApiSuccess<Tag[]>> {
+    const response = await this.client.get<ApiSuccess<Tag[]>>('/api/tags')
+    return response.data
+  }
+
+  async getResourceTags(
+    taggableType: string,
+    taggableId: number
+  ): Promise<ApiSuccess<Tag[]>> {
+    const response = await this.client.get<ApiSuccess<Tag[]>>('/api/tags/resource', {
+      params: { taggableType, taggableId },
+    })
+    return response.data
+  }
+
+  async attachTags(
+    taggableType: string,
+    taggableId: number,
+    tags: string[]
+  ): Promise<ApiSuccess> {
+    const response = await this.client.post<ApiSuccess>('/api/tags/attach', {
+      taggableType,
+      taggableId,
+      tags,
+    })
+    return response.data
+  }
+
+  async detachTags(
+    taggableType: string,
+    taggableId: number,
+    tagIds?: number[]
+  ): Promise<ApiSuccess> {
+    const response = await this.client.post<ApiSuccess>('/api/tags/detach', {
+      taggableType,
+      taggableId,
+      tagIds,
+    })
+    return response.data
   }
 }
 

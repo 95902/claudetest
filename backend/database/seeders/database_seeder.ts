@@ -1,6 +1,9 @@
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import User from '#models/user'
 import Tool from '#models/tool'
+import Article from '#models/article'
+import AiModel from '#models/ai_model'
+import { DateTime } from 'luxon'
 
 export default class extends BaseSeeder {
   async run() {
@@ -487,10 +490,225 @@ export default class extends BaseSeeder {
       },
     ])
 
+    // Create Articles
+    await Article.createMany([
+      {
+        title: 'The Rise of Multimodal AI: How GPT-4V is Changing Everything',
+        slug: 'rise-of-multimodal-ai-gpt4v',
+        content:
+          'The introduction of GPT-4V (Vision) marks a significant milestone in AI development. This multimodal model can process both text and images, opening up new possibilities for AI applications...',
+        excerpt:
+          'GPT-4V brings vision capabilities to language models, enabling new use cases from image analysis to visual question answering.',
+        sourceUrl: 'https://openai.com/research/gpt-4v',
+        author: 'OpenAI Research Team',
+        publishedAt: DateTime.now().minus({ days: 5 }),
+        imageUrl: null,
+        category: 'Research',
+        userId: adminUser.id,
+        viewsCount: 1234,
+      },
+      {
+        title: 'Best Practices for Building RAG Applications in 2024',
+        slug: 'best-practices-rag-applications-2024',
+        content:
+          'Retrieval-Augmented Generation (RAG) has become essential for building production-grade LLM applications. This guide covers the latest best practices including chunking strategies, embedding models selection, and retrieval optimization...',
+        excerpt:
+          'Learn how to build robust RAG applications with proper chunking, embeddings, and retrieval strategies.',
+        sourceUrl: null,
+        author: 'AI Engineering Team',
+        publishedAt: DateTime.now().minus({ days: 12 }),
+        imageUrl: null,
+        category: 'Tutorial',
+        userId: adminUser.id,
+        viewsCount: 3421,
+      },
+      {
+        title: 'Claude 3 Opus vs GPT-4: A Comprehensive Comparison',
+        slug: 'claude-3-opus-vs-gpt4-comparison',
+        content:
+          'With the release of Claude 3 Opus, Anthropic has positioned itself as a serious competitor to OpenAI. We tested both models across various tasks including coding, reasoning, and creative writing...',
+        excerpt:
+          'An in-depth comparison of Claude 3 Opus and GPT-4 across multiple dimensions.',
+        sourceUrl: null,
+        author: 'John Doe',
+        publishedAt: DateTime.now().minus({ days: 20 }),
+        imageUrl: null,
+        category: 'Comparison',
+        userId: normalUser.id,
+        viewsCount: 5678,
+      },
+      {
+        title: 'Open Source LLMs: A Complete Guide for 2024',
+        slug: 'open-source-llms-guide-2024',
+        content:
+          'The open-source LLM ecosystem has exploded in 2024. From Llama 3 to Mistral, developers now have access to powerful models they can run locally. This guide covers everything you need to know...',
+        excerpt:
+          'Explore the best open-source LLMs available today and learn how to use them effectively.',
+        sourceUrl: null,
+        author: 'AI Engineering Team',
+        publishedAt: DateTime.now().minus({ days: 8 }),
+        imageUrl: null,
+        category: 'Guide',
+        userId: adminUser.id,
+        viewsCount: 2890,
+      },
+      {
+        title: 'The Ethics of AI Voice Cloning: What Developers Need to Know',
+        slug: 'ethics-ai-voice-cloning',
+        content:
+          'As AI voice cloning becomes more accessible through platforms like ElevenLabs, ethical concerns have come to the forefront. This article explores the implications and best practices...',
+        excerpt:
+          'Understanding the ethical implications of AI voice cloning technology and responsible usage.',
+        sourceUrl: null,
+        author: 'Ethics Committee',
+        publishedAt: DateTime.now().minus({ days: 15 }),
+        imageUrl: null,
+        category: 'Ethics',
+        userId: normalUser.id,
+        viewsCount: 1567,
+      },
+    ])
+
+    // Create AI Models
+    await AiModel.createMany([
+      {
+        name: 'GPT-4 Turbo',
+        provider: 'OpenAI',
+        version: '1106-preview',
+        modelType: 'LLM',
+        contextWindow: 128000,
+        parametersCount: 'Unknown (rumored ~1.7T)',
+        pricing: {
+          input: '$0.01 per 1K tokens',
+          output: '$0.03 per 1K tokens',
+        },
+        capabilities: {
+          text: true,
+          code: true,
+          vision: true,
+          functionCalling: true,
+          json: true,
+        },
+        benchmarkScores: {
+          mmlu: 86.4,
+          humanEval: 67.0,
+          gsm8k: 92.0,
+        },
+        releaseDate: DateTime.fromISO('2023-11-06'),
+        documentationUrl: 'https://platform.openai.com/docs/models/gpt-4-turbo',
+        status: 'active',
+      },
+      {
+        name: 'Claude 3 Opus',
+        provider: 'Anthropic',
+        version: '20240229',
+        modelType: 'LLM',
+        contextWindow: 200000,
+        parametersCount: 'Unknown',
+        pricing: {
+          input: '$0.015 per 1K tokens',
+          output: '$0.075 per 1K tokens',
+        },
+        capabilities: {
+          text: true,
+          code: true,
+          vision: true,
+          analysis: true,
+        },
+        benchmarkScores: {
+          mmlu: 86.8,
+          humanEval: 84.9,
+          gsm8k: 95.0,
+        },
+        releaseDate: DateTime.fromISO('2024-03-04'),
+        documentationUrl: 'https://docs.anthropic.com/claude/docs',
+        status: 'active',
+      },
+      {
+        name: 'Gemini 1.5 Pro',
+        provider: 'Google',
+        version: '1.5',
+        modelType: 'LLM',
+        contextWindow: 1000000,
+        parametersCount: 'Unknown',
+        pricing: {
+          input: '$0.0035 per 1K tokens',
+          output: '$0.0105 per 1K tokens',
+        },
+        capabilities: {
+          text: true,
+          code: true,
+          vision: true,
+          audio: true,
+          video: true,
+        },
+        benchmarkScores: {
+          mmlu: 85.9,
+          humanEval: 71.9,
+          gsm8k: 91.7,
+        },
+        releaseDate: DateTime.fromISO('2024-02-15'),
+        documentationUrl: 'https://ai.google.dev/docs',
+        status: 'active',
+      },
+      {
+        name: 'Llama 3 70B',
+        provider: 'Meta',
+        version: '3.0',
+        modelType: 'LLM',
+        contextWindow: 8192,
+        parametersCount: '70B',
+        pricing: {
+          note: 'Open source - free to use',
+        },
+        capabilities: {
+          text: true,
+          code: true,
+          reasoning: true,
+        },
+        benchmarkScores: {
+          mmlu: 79.5,
+          humanEval: 81.7,
+          gsm8k: 93.0,
+        },
+        releaseDate: DateTime.fromISO('2024-04-18'),
+        documentationUrl: 'https://llama.meta.com/docs/',
+        status: 'active',
+      },
+      {
+        name: 'Mistral Large',
+        provider: 'Mistral AI',
+        version: '1.0',
+        modelType: 'LLM',
+        contextWindow: 32000,
+        parametersCount: 'Unknown',
+        pricing: {
+          input: '$0.008 per 1K tokens',
+          output: '$0.024 per 1K tokens',
+        },
+        capabilities: {
+          text: true,
+          code: true,
+          reasoning: true,
+          functionCalling: true,
+        },
+        benchmarkScores: {
+          mmlu: 81.2,
+          humanEval: 45.1,
+          gsm8k: 78.0,
+        },
+        releaseDate: DateTime.fromISO('2024-02-26'),
+        documentationUrl: 'https://docs.mistral.ai/',
+        status: 'active',
+      },
+    ])
+
     console.log('✅ Database seeded successfully!')
     console.log('👤 Test Users:')
     console.log('   - Admin: admin@aitools.com / Admin123!')
     console.log('   - User: john@example.com / User123!')
-    console.log(`🛠️  Created ${await Tool.query().count('* as total').first()} tools`)
+    console.log(`🛠️  Created ${(await Tool.query().count('* as total').first())?.total} tools`)
+    console.log(`📰 Created ${(await Article.query().count('* as total').first())?.total} articles`)
+    console.log(`🤖 Created ${(await AiModel.query().count('* as total').first())?.total} AI models`)
   }
 }
