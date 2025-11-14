@@ -56,14 +56,30 @@ Open http://localhost:5173 in your browser
 
 ### What You Can Do Now:
 
-1. **Browse AI Tools** - Visit http://localhost:5173/tools
+1. **Create an Account** - Visit http://localhost:5173/register
+   - Register with username, email, and password
+   - Password requirements validation in real-time
+   - Auto-login after registration
+
+2. **Login** - Visit http://localhost:5173/login
+   - Login with email/username + password
+   - Test credentials: `admin@aitools.com` / `Admin123!`
+   - Secure JWT token authentication
+
+3. **Browse AI Tools** - Visit http://localhost:5173/tools
    - View 16 pre-seeded AI tools (ChatGPT, Claude, Cursor, Midjourney, etc.)
    - Filter by category (LLM, Code Assistant, Image Generation, etc.)
    - Filter by pricing (Free, Freemium, Paid)
    - Search tools by name/description
-   - View ratings, views, features, pros/cons
+   - Click on any tool to see full details
 
-2. **Test API Endpoints** (via Postman, curl, or browser)
+4. **View Tool Details** - Click on any tool card
+   - Complete tool information with tabs
+   - Features, pros & cons sections
+   - Links to website and GitHub
+   - Ratings and view statistics
+
+5. **Test API Endpoints** (via Postman, curl, or browser)
 
    **Public endpoints:**
    - `GET http://localhost:3333/api/tools` - List all tools
@@ -111,13 +127,23 @@ Open http://localhost:5173 in your browser
 - ✅ Security: CSRF protection, CORS, input sanitization
 
 ### Frontend (React + TypeScript)
+- ✅ Complete authentication flow (Login + Register)
+  * React Hook Form + Zod validation
+  * Real-time password requirements checker
+  * Error handling from backend
+  * Auto-redirect after login
 - ✅ React Router for navigation
 - ✅ React Query for API state management
-- ✅ AuthContext for authentication
+- ✅ AuthContext for global auth state
 - ✅ Tailwind CSS + shadcn/ui components
+  * Button, Card, Input, Badge, Label, Tabs, Skeleton
+  * All components fully styled and accessible
 - ✅ Responsive design (mobile, tablet, desktop)
 - ✅ Tools browsing with filters and search
+- ✅ Tool detail page with tabs (Overview, Features, Pros/Cons)
 - ✅ Pagination
+- ✅ Loading states with skeleton components
+- ✅ Navigation bar with auth state
 
 ### Database (PostgreSQL)
 - ✅ 10 tables created (users, tools, articles, ai_models, comments, ratings, bookmarks, tags, api_keys, sources)
@@ -218,12 +244,14 @@ cd backend && node ace migration:run && node ace db:seed
    - Setup reverse proxy (nginx)
    - Enable SSL/HTTPS
 
-## 🐛 Known Limitations (MVP)
+## 🐛 Known Limitations
 
-- Login/Register pages show placeholder (API works, UI not implemented)
-- Comments, ratings, bookmarks UI not implemented (backend ready)
-- No image upload for tools (URLs only)
-- No admin dashboard UI (API endpoints exist)
+- Comments, ratings, bookmarks UI not implemented (backend tables ready)
+- No image upload for tools (URLs only, logo_url field exists)
+- No admin dashboard UI (API endpoints can be added)
+- No forgot password functionality
+- No email verification
+- No user profile editing UI (API endpoint exists)
 
 ## 📞 Support
 
