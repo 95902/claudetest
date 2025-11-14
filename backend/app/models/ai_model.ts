@@ -25,22 +25,13 @@ export default class AiModel extends BaseModel {
   @column()
   declare parametersCount: string | null
 
-  @column({
-    prepare: (value: any) => JSON.stringify(value),
-    consume: (value: string) => (value ? JSON.parse(value) : null),
-  })
+  @column()
   declare pricing: Record<string, any> | null
 
-  @column({
-    prepare: (value: any) => JSON.stringify(value),
-    consume: (value: string) => (value ? JSON.parse(value) : null),
-  })
+  @column()
   declare capabilities: Record<string, any> | null
 
-  @column({
-    prepare: (value: any) => JSON.stringify(value),
-    consume: (value: string) => (value ? JSON.parse(value) : null),
-  })
+  @column()
   declare benchmarkScores: Record<string, any> | null
 
   @column.date()

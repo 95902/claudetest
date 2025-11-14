@@ -28,22 +28,13 @@ export default class Tool extends BaseModel {
   @column()
   declare pricing: 'free' | 'freemium' | 'paid'
 
-  @column({
-    prepare: (value: any) => JSON.stringify(value),
-    consume: (value: string) => (value ? JSON.parse(value) : null),
-  })
+  @column()
   declare features: Record<string, any> | null
 
-  @column({
-    prepare: (value: string[]) => `{${value.join(',')}}`,
-    consume: (value: string) => value ? value.slice(1, -1).split(',').filter(Boolean) : [],
-  })
+  @column()
   declare pros: string[] | null
 
-  @column({
-    prepare: (value: string[]) => `{${value.join(',')}}`,
-    consume: (value: string) => value ? value.slice(1, -1).split(',').filter(Boolean) : [],
-  })
+  @column()
   declare cons: string[] | null
 
   @column()
