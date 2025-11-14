@@ -22,10 +22,8 @@ export default class AuthController {
         preferences: null,
       })
 
-      // Generate access token
-      const token = await User.accessTokens.create(user, ['*'], {
-        expiresIn: '30 days',
-      })
+      // Generate access token (no expiration)
+      const token = await User.accessTokens.create(user)
 
       return response.created({
         message: 'User registered successfully',
@@ -65,10 +63,8 @@ export default class AuthController {
       // Verify credentials
       const user = await User.verifyCredentials(uid, password)
 
-      // Generate access token
-      const token = await User.accessTokens.create(user, ['*'], {
-        expiresIn: '30 days',
-      })
+      // Generate access token (no expiration)
+      const token = await User.accessTokens.create(user)
 
       return response.ok({
         message: 'Login successful',
